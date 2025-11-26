@@ -171,6 +171,6 @@ Concierge-Agent-Capstone-Project/
 ---
 
 ## 🛠️ Tech Stack
-- ###Language###: Python 3.10+
+- ### Language: Python 3.10+
 - Backend: FastAPI, Uvicorn
 - Frontend: Streamlit
