@@ -137,3 +137,36 @@ Concierge-Agent-Capstone-Project/
    - ```WebSearchTool```
      - If Google CSE keys are configured: tries ```https://www.googleapis.com/customsearch/v1.```
      - On any error (403, quota, etc.) or missing keys: logs error and returns mock results to keep the agent flow stable.      
+
+4. ```app.py``` (FastAPI)
+   - Defines:
+     ```bash
+     POST /ask
+     {
+      "query": "...",
+      "session_id": "optional",
+      "parallel": false
+     }
+     ```
+   - Instantiates:
+     - Tools (```RecipeTool```, ```ShoppingTool```, ```WebSearchTool```)
+     - ```InMemorySessionService```
+     - ```Coordinator```
+   - Returns ```Coordinator.handle_request(...)``` output.
+   - Also exposes a simple ```/health``` endpoint.
+
+5. ```frontend/streamlit_app.py```
+   - Simple UI:
+     - Textarea for the user query.
+     - “Send” button which:
+       - Calls ```http://127.0.0.1:8000/ask``` with JSON body.
+       - Displays a formatted response.
+   - Output format:
+     - Plan (Steps) – numbered list of descriptions.
+     - Suggested Shopping List – merged, unique items from:
+       - ```ShoppingTool.items```
+       - ```RecipeTool.recipe.ingredients```
+     - Raw JSON (debug) – available under a Streamlit expander for inspection.
+
+---
+
