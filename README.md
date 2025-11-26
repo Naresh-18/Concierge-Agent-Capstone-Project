@@ -90,3 +90,14 @@ Concierge-Agent-Capstone-Project/
 ├── template.sh                 # Project scaffolding script (creates directories/files)
 ├── README.md                   # You are here
 └── LICENSE                     # Apache-2.0
+```
+---
+
+## 🧩 Key Components
+1. ```config.py```
+   - Loads environment variables from ```.env``` using ```python-dotenv```.
+   - Centralizes access to:
+      - ```OPENAI_API_KEY```
+      - ```OPENAI_API_BASE``` (OpenRouter base)
+      - ```GOOGLE_API_KEY```, ```GOOGLE_CSE_ID``` (optional, for Google Custom Search)
+   - Keeps configuration simple (no pydantic settings dependency). 
