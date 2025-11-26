@@ -100,4 +100,40 @@ Concierge-Agent-Capstone-Project/
       - ```OPENAI_API_KEY```
       - ```OPENAI_API_BASE``` (OpenRouter base)
       - ```GOOGLE_API_KEY```, ```GOOGLE_CSE_ID``` (optional, for Google Custom Search)
-   - Keeps configuration simple (no pydantic settings dependency). 
+   - Keeps configuration simple (no pydantic settings dependency).
+
+2. ```ai_agent.py```
+   Implements the multi-agent logic:
+   - ```PlannerAgent```
+      - Uses ```requests``` to call OpenRouter ```/chat/completions``` with model: ```deepseek/deepseek-chat```
+      - Prompted to break the user query into numbered, short, actionable steps.
+      - Parses the LLM output into a list of ```{ id, description }``` step objects.
+      - On error, falls back to heuristic multi-step plans for meal/recipe/travel queries.
+
+   - ```WorkerAgent```
+      - For each step:
+        - If it mentions “recipe” or “meal” → calls ```RecipeTool```.
+        - If it mentions “shopping” / “shopping list” → calls ```ShoppingTool```.
+        - Otherwise → calls ```WebSearchTool```.
+       
+   - ```Coordinator```
+      - Accepts ```session_id``` and ```user_query```.
+      - Gets or creates a session from ```InMemorySessionService```.
+      - Calls planner → gets plan.
+      - Sequentially executes each step via ```WorkerAgent```.
+      - Records step results + execution time.
+      - Returns ```{ session_id, plan, results }``` as JSON.
+
+3. ```tools.py```
+   - ```RecipeTool```
+     - Returns a demo recipe such as “Mixed Veg Stir Fry” with:
+       - Ingredients like ```["carrot", "beans", "peas", "oil", "salt"]```
+       - Basic steps
+
+   - ```ShoppingTool```
+     - Returns a basic list of items: ```["rice", "dal", "veggies"]```
+     - In a real extension, this could aggregate ingredients from planner steps.
+
+   - ```WebSearchTool```
+     - If Google CSE keys are configured: tries ```https://www.googleapis.com/customsearch/v1.```
+     - On any error (403, quota, etc.) or missing keys: logs error and returns mock results to keep the agent flow stable.      
