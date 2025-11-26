@@ -263,19 +263,15 @@ This project demonstrates several key agentic concepts from the course:
 - Multi-Agent System
   - ```PlannerAgent``` → ```WorkerAgent``` → ```Coordinator```
   - Clear separation of planning vs. execution.
-
 - Tools
- - Custom tools: ```RecipeTool```, ```ShoppingTool```, ```WebSearchTool```.
- 
+  - Custom tools: ```RecipeTool```, ```ShoppingTool```, ```WebSearchTool```. 
 - Long-Running Operations & Sessions
- - ```InMemorySessionService``` keeps per-session history and can be extended to persistent storage.
-
+  - ```InMemorySessionService``` keeps per-session history and can be extended to persistent storage.
 - Context Engineering
- - Planner prompts specifically designed to return numbered steps.
- - Coordinator uses those steps as structured actions.
-
+  - Planner prompts specifically designed to return numbered steps.
+  - Coordinator uses those steps as structured actions.
 - Observability
- - ```loguru``` logs LLM errors, HTTP issues, and tool errors (e.g., Google 403s) while keeping the agent robust.
+  - ```loguru``` logs LLM errors, HTTP issues, and tool errors (e.g., Google 403s) while keeping the agent robust.
 
 ---
 
